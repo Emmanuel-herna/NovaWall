@@ -20,36 +20,30 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          accept-android-sdk-licenses: 'true'
+          log-accepted-android-sdk-licenses: 'false'
 
-      - name: Accept Android licenses
+      - name: Install SDK packages
         run: |
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager --update || true
+          sdkmanager --install "platforms;android-35" "build-tools;35.0.0" "platform-tools"
 
       - name: Create Gradle Wrapper
         run: |
           mkdir -p gradle/wrapper
-          curl -sL -o gradlew https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew
-          curl -sL -o gradlew.bat https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew.bat
-          curl -sL -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.9.0/gradle/wrapper/gradle-wrapper.jar
+          curl -fsSL -o gradlew https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew
+          curl -fsSL -o gradlew.bat https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew.bat
+          curl -fsSL -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.9.0/gradle/wrapper/gradle-wrapper.jar
           chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
-
-      - name: Find APKs
-        if: always()
-        run: |
-          echo "Looking for APK files..."
-          find . -name "*.apk" -type f || true
-          ls -la app/build/outputs/apk/debug/ || true
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
-        if: success()
         with:
           name: NovaWall-debug-apk
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: warn
-          retention-days: 5
+          if-no-files-found: error
+          retention-days: 7
