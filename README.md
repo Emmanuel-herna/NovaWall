@@ -1,36 +1,24 @@
 # NovaWall
 
-A modern Android Live Wallpaper app built with Jetpack Compose.
+Android live wallpaper app with dark mode, categories, Google Sign-In, and saved wallpapers.
 
-## Features (planned)
-- Live / animated wallpapers
-- Dark mode support
-- Categories
-- Set as Homescreen + Lockscreen
-- Clean Material 3 design
+## Features
+- Live / animated wallpaper service
+- Dark Material 3 UI
+- Google Sign-In (Credential Manager)
+- Save wallpapers per signed-in account (local on device for now)
 
-## Tech Stack
-- Kotlin
-- Jetpack Compose
-- Material 3
-- WallpaperService (for live wallpapers)
+## Google Sign-In setup
+1. Open [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a project (or use an existing one)
+3. Configure OAuth consent screen
+4. Create an **OAuth client ID** of type **Web application**
+5. Put that client ID into `app/src/main/res/values/strings.xml` as `default_web_client_id`
+6. Also create an Android OAuth client with package `com.novawall.app` and your debug/release SHA-1 if prompted
 
-## Getting Started
+Until a real Web client ID is set, tapping **Sign in with Google** shows a configuration message instead of opening the account picker.
 
-1. Clone the repo
-2. Open in Android Studio
-3. Sync Gradle
-4. Run on a device/emulator (API 26+)
+## Build
+Push to `main` runs GitHub Actions and uploads a debug APK artifact.
 
-## Project Structure
-```
-app/
-  src/main/
-    java/com/novawall/app/
-      MainActivity.kt
-      NovaWallApp.kt
-      ui/
-      wallpaper/
-```
-
-Built collaboratively with Grok.
+Or open the project in Android Studio and run on a device.

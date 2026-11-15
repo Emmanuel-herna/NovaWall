@@ -3,4 +3,6 @@
     <string name="app_name">NovaWall</string>
     <string name="wallpaper_name">NovaWall Live</string>
     <string name="wallpaper_description">Beautiful animated live wallpapers</string>
+    <!-- Replace with your Web client ID from Google Cloud Console (OAuth 2.0 Client ID, type Web application) -->
+    <string name="default_web_client_id">REPLACE_WITH_YOUR_WEB_CLIENT_ID.apps.googleusercontent.com</string>
 </resources>
