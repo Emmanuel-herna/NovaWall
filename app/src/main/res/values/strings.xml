@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NovaWall</string>
+    <string name="wallpaper_name">NovaWall Live</string>
+    <string name="wallpaper_description">Beautiful animated live wallpapers</string>
+</resources>
