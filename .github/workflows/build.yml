@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution:: 'temurin'
+          distribution: 'temurin'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -30,20 +30,15 @@ jobs:
       - name: Create Gradle Wrapper
         run: |
           mkdir -p gradle/wrapper
-          # Download official gradle wrapper files
           curl -sL -o gradlew https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew
           curl -sL -o gradlew.bat https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew.bat
           curl -sL -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.9.0/gradle/wrapper/gradle-wrapper.jar
           chmod +x gradlew
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
       - name: Build Debug APK
-        run: |
-          ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Find and list APKs
+      - name: Find APKs
         if: always()
         run: |
           echo "Looking for APK files..."
