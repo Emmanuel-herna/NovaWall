@@ -3,7 +3,7 @@ name: Build Debug APK
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:   # Allows manual trigger from GitHub website
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,31 +17,44 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution:: 'temurin'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Create Gradle Wrapper script
+      - name: Accept Android licenses
         run: |
-          # Download gradle wrapper jar and script if missing
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager --update || true
+
+      - name: Create Gradle Wrapper
+        run: |
           mkdir -p gradle/wrapper
-          curl -sL https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew -o gradlew
-          curl -sL https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew.bat -o gradlew.bat
-          curl -sL https://github.com/gradle/gradle/raw/v8.9.0/gradle/wrapper/gradle-wrapper.jar -o gradle/wrapper/gradle-wrapper.jar
+          # Download official gradle wrapper files
+          curl -sL -o gradlew https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew
+          curl -sL -o gradlew.bat https://raw.githubusercontent.com/gradle/gradle/v8.9.0/gradlew.bat
+          curl -sL -o gradle/wrapper/gradle-wrapper.jar https://github.com/gradle/gradle/raw/v8.9.0/gradle/wrapper/gradle-wrapper.jar
           chmod +x gradlew
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Build Debug APK
         run: |
-          ./gradlew assembleDebug --stacktrace --info
+          ./gradlew assembleDebug --stacktrace
 
-      - name: List APK location
-        run: find . -name "*.apk" || true
+      - name: Find and list APKs
+        if: always()
+        run: |
+          echo "Looking for APK files..."
+          find . -name "*.apk" -type f || true
+          ls -la app/build/outputs/apk/debug/ || true
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
+        if: success()
         with:
           name: NovaWall-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 5
