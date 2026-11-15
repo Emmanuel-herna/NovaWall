@@ -39,7 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.Modifier.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -77,7 +77,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 .padding(padding)
                 .padding(horizontal = 20.dp)
         ) {
-            Spacer(Modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = "NovaWall",
@@ -91,7 +91,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 color = Color.White.copy(alpha = 0.7f)
             )
 
-            Spacer(Modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             AuthSection(
                 displayName = state.session?.displayName,
@@ -102,7 +102,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 onSignOut = viewModel::signOut
             )
 
-            Spacer(Modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 FilterChip(
@@ -117,7 +117,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 )
             }
 
-            Spacer(Modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             if (state.showSavedOnly && state.session == null) {
                 Box(
